@@ -39,11 +39,11 @@ _See https://github.com/falkowich/gvm10-docker/issues/17_
 
 ## Sqlite3 DB backend
 
-```docker pull sohnemann/gvm10:sqlite```  
+```docker pull sohnemann/gvm11:sqlite```  
 
 And if you want to try out "bleeding edge", master branch
 
-```docker pull sohnemann/gvm10:edge```  
+```docker pull sohnemann/gvm11:edge```  
 
 ### Use with "docker run"
 
