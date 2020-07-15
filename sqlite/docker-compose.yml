@@ -1,7 +1,7 @@
 version: '3'
 services:
   
-  gvm10:
+  gvm11:
     image: sohnemann/gvm11:sqlite
     ports: 
       - 445:443
