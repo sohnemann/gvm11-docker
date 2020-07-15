@@ -1,8 +1,7 @@
-# gvm10-docker
+# gvm11-docker
+### forked from falkowich/gvm10-docker
 
-[<img src="https://slack-sadsloth-invite.herokuapp.com/badge.svg?colorB=1470A3">](https://slack-sadsloth-invite.herokuapp.com/) ![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/falkowich/gvm10.svg) ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/falkowich/gvm10.svg)  ![Docker Pulls](https://img.shields.io/docker/pulls/falkowich/gvm10.svg)
-
-- [gvm10-docker](#gvm10-docker)
+- [gvm11-docker](#gvm11-docker)
   - [Tags and versions](#tags-and-versions)
   - [Some examples and info](#some-examples-and-info)
   - [Sqlite3 DB backend](#sqlite3-db-backend)
@@ -32,39 +31,27 @@ _See https://github.com/falkowich/gvm10-docker/issues/17_
 
 | image type | upstream gvm-libs | docker Tag | local branch | autobuild on dockerhub| description | 
 |---|---|---|---|---|---|
-| sqlite | master | sqlite-dev  | master | yes | sqlite and gsa |
-| psql | master | psql-dev  | master | yes | psql and gsa |
-| slave | master | slave-dev | master | yes | scanner (slave) without gsa |
-| sqlite | 10.0-git | sqlite-latest  | latest | yes | sqlite and gsa |
-| psql | 10.0-git | psql-latest   | latest | yes | psql and gsa |
-| slave | 10.0-git | slave-latest  | latest | yes | scanner (slave) without gsa |
-| sqlite | 10.0 | sqlite | stable | no | sqlite and gsa |
-| psql | 10.0 | psql | stable | no | psql and gsa |
-| slave | 10.0 | slave | stable| no | scanner (slave) without gsa |
+| sqlite | 11.0 | sqlite | stable | no | sqlite and gsa |
+| psql | 11.0 | psql | stable | no | psql and gsa |
 
-_(If you can come up on a better way to handle these versions and images om, please throw me a line or create an issue on it) :)_
 
-Want to chat or have a question about the build, join up here [slack invite](https://join.slack.com/t/sadsloth/shared_invite/enQtODI0MTM2Nzc4OTQ0LWZmOThkYzY4MzAwZjVjYzhmMDdkYTY3MmFkOTk0YmNlZmQ2MWMwNDM5MmE4ZjUzZmU5MmU0YjQzYmE3YzhjZmU) and chat, and perhaps help others out :) 
 
-## Some examples and info
-
-I tried to do a writeup how to use these images in a _(hopefully)_ working environment on [sadsloth.net](https://sadsloth.net/post/gmv10dockermasterslave/).
 
 ## Sqlite3 DB backend
 
-```docker pull falkowich/gvm10:sqlite```  
+```docker pull sohnemann/gvm10:sqlite```  
 
 And if you want to try out "bleeding edge", master branch
 
-```docker pull falkowich/gvm10:edge```  
+```docker pull sohnemann/gvm10:edge```  
 
 ### Use with "docker run"
 
 #### Start with non-persistant storage
 
-```docker run -p 443:443 falkowich/gvm10:sqlite```
+```docker run -p 443:443 sohnemann/gvm10:sqlite```
 
-```docker pull falkowich/gvm10:edge```  
+```docker pull sohnemann/gvm11:edge```  
 
 #### Start with mounted volume
 
@@ -75,8 +62,8 @@ This will mount /usr/local/var/lib/gvm/ in /var/lib/docker/volumes/gvm/_data/ as
 docker run \
        -p 443:443 \
        -v gvm:/usr/local/var/lib/gvm/ \
-       --name gvm10 \
-       falkowich/gvm10:sqlite
+       --name gvm11 \
+       sohnemann/gvm11:sqlite
 ```
 
 To check out info about the volume
@@ -100,14 +87,14 @@ docker volume inspect gvm
 docker run \
        -p 443:443 \
        -v gvm:/usr/local/var/lib/gvm/ \
-       --name gvm10 \
-       falkowich/gvm10:edge
+       --name gvm11 \
+       sohnemann/gvm11:edge
 ```
 
 
 ## PostgrSQL DB backend
 
-```docker pull falkowich/gvm10:psql```  
+```docker pull sohnemann/gvm11:psql```  
 
 ### Use with "docker run"
 
@@ -124,8 +111,8 @@ docker run \
        -p 443:443 \
        -v gvm:/usr/local/var/lib/gvm \
        -v psql:/var/lib/postgresql/ \
-       --name gvm10 \
-       falkowich/gvm10:psql
+       --name gvm11 \
+       sohnemann/gvm11:psql
 ```
 
 To check out info about the volume
@@ -164,19 +151,19 @@ docker volume inspect gvm
 ### With docker-compose
 
 Sync SCAP data  
-```docker-compose exec gvm10 /usr/local/sbin/greenbone-scapdata-sync```
+```docker-compose exec gvm11 /usr/local/sbin/greenbone-scapdata-sync```
 
 Sync CERT data  
-```docker-compose exec gvm10 /usr/local/sbin/greenbone-certdata-sync```
+```docker-compose exec gvm11 /usr/local/sbin/greenbone-certdata-sync```
 
 Sync NVT data  
-```docker-compose exec gvm10 /usr/local/sbin/greenbone-nvt-sync```
+```docker-compose exec gvm11 /usr/local/sbin/greenbone-nvt-sync```
 
 DB maintanance (vacuum, analyze, cleanup-config-prefs, cleanup-port-names, cleanup-result-severities, cleanup-schedule-times, rebuild-report-cache or update-report-cache)  
-```docker-compose exec gvm10 /usr/local/sbin/gvmd -v --optimize=vacuum```
+```docker-compose exec gvm11 /usr/local/sbin/gvmd -v --optimize=vacuum```
 
 Change admin password  
-```docker-compose exec gvm10 /usr/local/sbin/gvmd -v --user=admin --new-password=super-secret-password```
+```docker-compose exec gvm11 /usr/local/sbin/gvmd -v --user=admin --new-password=super-secret-password```
 
 Update to "latest" image
 ```bash
@@ -188,109 +175,27 @@ docker-compose up -d
 ### With docker
 
 Sync SCAP data  
-```docker exec -i gvm10 sh -c "/usr/local/sbin/greenbone-scapdata-sync"```
+```docker exec -i gvm11 sh -c "/usr/local/sbin/greenbone-scapdata-sync"```
 
 Sync CERT data  
-```docker exec -i gvm10 sh -c "/usr/local/sbin/greenbone-certdata-sync"```
+```docker exec -i gvm11 sh -c "/usr/local/sbin/greenbone-certdata-sync"```
 
 Sync NVT data  
-```docker exec -i gvm10 sh -c "/usr/local/sbin/greenbone-nvt-sync"```
+```docker exec -i gvm11 sh -c "/usr/local/sbin/greenbone-nvt-sync"```
 
 DB maintanance (vacuum, analyze, cleanup-config-prefs, cleanup-port-names, cleanup-result-severities, cleanup-schedule-times, rebuild-report-cache or update-report-cache)  
-```docker exec -i gvm10 sh -c "/usr/local/sbin/gvmd -v --optimize=vacuum"```
+```docker exec -i gvm11 sh -c "/usr/local/sbin/gvmd -v --optimize=vacuum"```
 
 Change admin password  
-```docker exec -i gvm10 sh -c "/usr/local/sbin/gvmd -v --user=admin --new-password=super-secret-password"```
+```docker exec -i gvm11 sh -c "/usr/local/sbin/gvmd -v --user=admin --new-password=super-secret-password"```
 
 ## GSA
 
 user/pass - admin/admin
 
-## Master - Slave setup [take 1 :)]
+## Infos
 
-I tried to do a writeup how to use these images in a _(hopefully)_ working environment on [sadsloth.net](https://sadsloth.net/post/gmv10dockermasterslave/).
-
-### Master Setup
-
-```bash
-docker run \
-       -p 443:443 \
-       -p 9391:9391 \
-       -v gvm:/usr/local/var/lib/gvm \
-       -v psql:/var/lib/postgresql/ \
-       --name gvm10 \
-       falkowich/gvm10:psql
-```
-
-### Slave Setup
-
-```bash
-docker run \
-       -p 9391:9391 \
-       -v gvm:/usr/local/var/lib/gvm/ \
-       falkowich/gvm10:slave
-```
-
-Then on the slave (scanner):  
-```docker exec -i gvm10 sh -c "/usr/local/sbin/gvmd -v --create-user=scanner-user"```
-
-Write down password or change to another one.  
-``` User created with password 'ca3c6307-c8d8-4b96-83c5-cdaffd803671'. ```
-
-Create a scanner in GSAD on the **MASTER** (I will checkout the cli way): 
-Configuration > Scanners > New Scanner:  
-```
-Name: Scanner01 
-Comment: Remote Scanner   
-Type: GMP Scanner 
-Host: IP on slave  
-Credentials: New Credentials 
-
-  Name: Slave01 Credentials  
-  Comment: Foo Bar 
-  Username: scanner-user 
-  Password: ca3c6307-c8d8-4b96-83c5-cdaffd803671  
-  [save]  
-[save]
-```
-
-On the **MASTER**:  
-```docker exec -i gvm10 sh -c "/usr/local/sbin/gvmd --get-scanners"```  
-
-Then you will get the newly created Scanner01, like this:  
-```33d23dc3-00f1-4e4a-82da-1f003303c322  Scanner01```
-
-From the **SLAVE** copy  /var/lib/docker/volumes/gvm/_data/CA/cacert.pem to the **MASTER** for example to /tmp/scanner01-cacert.pem
-
-On the **MASTER**:  
-```sudo cp /tmp/scanner01-cacert.pem /var/lib/docker/volumes/gvm/_data/CA/ -arv```
-
-Then on the **MASTER**:  
-```docker exec -i gvm10 sh -c "/usr/local/sbin/gvmd --modify-scanner=33d23dc3-00f1-4e4a-82da-1f003303c322 --scanner-ca-pub=/usr/local/var/lib/gvm/CA/scanner01-cacert.pem```
-
-Now you should be able to start scans from the MASTER and select scanner01 as scanner :)
-
-_This will be rewritten, with better information_
-
-## Disclamer
-
-This is an unofficial build and my try to build gvm10 docker containers.  
-One goal is to get a working master/slave setup, with a sane workflow.  
-Hopefully an usable ansible playbook that can help with the slaves..
-But then, perhaps it doesn't get more interesting than this :)
-
-Much info was learned from [mikesplain/openvas-docker](https://github.com/mikesplain/openvas-docker) that makes good production ready container builds.
+This repo was forked from [falkowich/gvm10-docker](https://github.com/mikesplain/openvas-docker). Thanks for the great work!
 
 ## ToDo / Thoughts / Goals
-- better logging?
-- openvas-check-setup type of check?
-- tools like arachni etc
-
-## Done [sorta]
-
-- ~~postgresql build~~
-- ~~separated containers for sql? (scrapped for the moment)~~
-- ~~better volume support~~
-- ~~master/slave images?~~
-- ~~docker-compose files.~~
-- ~~Fix workflow with testing before build.. _(..Lots of PEBKAC tonight..)~~
+- Make GVM11 work in Docker
